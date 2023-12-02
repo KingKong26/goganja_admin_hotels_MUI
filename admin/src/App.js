@@ -1,6 +1,7 @@
 import { Routes, Route, BrowserRouter, Navigate } from "react-router-dom";
 
 import Registration from "./pages/registration";
+import AddHotel from "./pages/hotels/add-hotel";
 import Settings from "./pages/setting";
 import Hotel from "./pages/hotels";
 import Rooms from "./pages/rooms";
@@ -56,6 +57,7 @@ export default function App() {
         >
           <Route index element={<Home />} />
           <Route path="/hotels" element={<Hotel />} />
+          <Route path="/add-hotel" element={<AddHotel />} />
           <Route path="/rooms" element={<Rooms />} />
           <Route path="/settings" element={<Settings />} />
         </Route>
