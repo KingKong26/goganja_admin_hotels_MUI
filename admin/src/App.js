@@ -1,24 +1,67 @@
-import Sidenav from "./components/sidenav";
-import {Routes, Route, BrowserRouter} from 'react-router-dom'
-import Hotels from "./pages/Hotels";
-import Rooms from "./pages/Rooms";
-import Home from "./pages/Home";
-import Settings from "./pages/Settings";
+import { Routes, Route, BrowserRouter, Navigate } from "react-router-dom";
 
+import Registration from "./pages/registration";
+import AddHotel from "./pages/hotels/add-hotel";
+import Settings from "./pages/setting";
+import Hotel from "./pages/hotels";
+import Rooms from "./pages/rooms";
+import Login from "./pages/login";
+import Layout from "./layout";
+import Home from "./pages";
+
+const ProtectedRoute = ({ children }) => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return children;
+};
+
+const PublicRoute = ({ children }) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    return <Navigate to="/" replace />;
+  }
+
+  return children;
+};
 
 export default function App() {
   return (
-   <>
-   <BrowserRouter>
-   
-   <Routes>
-    <Route path="/" exact element={<Home />}></Route>
-    <Route path="/hotels" exact element={<Hotels/>}></Route>
-    <Route path="/rooms" exact element={<Rooms />}></Route>
-    <Route path="/settings" exact element={<Settings />}></Route>
-   </Routes>
-   <Sidenav />
-   </BrowserRouter>
-   </>
-  )
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="/registration"
+          element={
+            <PublicRoute>
+              <Registration />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <PublicRoute>
+              <Login />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <Layout />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<Home />} />
+          <Route path="/hotels" element={<Hotel />} />
+          <Route path="/add-hotel" element={<AddHotel />} />
+          <Route path="/rooms" element={<Rooms />} />
+          <Route path="/settings" element={<Settings />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
 }
