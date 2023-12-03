@@ -29,7 +29,13 @@ export default function Hotel() {
     try {
       const empCollectionRef = collection(db, "places");
       const data = await getDocs(empCollectionRef);
-      setRows(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      let hotelData = [];
+      data.docs.forEach((doc) => {
+        return doc.data()?.properties?.forEach((item) => {
+          hotelData.push({ ...item, place: doc.data().place, placeId: doc.data().id });
+        });
+      });
+      setRows(hotelData);
     } catch (error) {
       console.error("Error fetching hotels:", error);
     }
@@ -98,18 +104,22 @@ export default function Hotel() {
                 return (
                   <TableRow key={row.id} hover role="checkbox" tabIndex={-1}>
                     <TableCell align="left">
-                      {/* {row.place} */}
                       <Link to={row.placeImage} target="_blank">
-                        <img src={row.placeImage} width={80} height={35} alt="" />
+                        <img src={row.image} width={80} height={35} alt="" />
                       </Link>
                     </TableCell>
                     <TableCell align="left">{row.place}</TableCell>
-                    <TableCell align="left">{row.address}</TableCell>
                     <TableCell align="left">{row.name}</TableCell>
+                    <TableCell align="left">{row.address}</TableCell>
                     <TableCell align="left">
                       <Stack direction="row" spacing={2}>
-                        <DeleteIcon className="cursor__pointer" onClick={() => deletePlace(row.id)} />
-                        {/* <EditIcon className="cursor__pointer" onClick={() => {}} /> */}
+                        <DeleteIcon className="cursor__pointer" onClick={() => deletePlace(row.placeId)} />
+                        <EditIcon
+                          className="cursor__pointer"
+                          onClick={() => {
+                            navigate(`/edit-hotel/${row.placeId}`);
+                          }}
+                        />
                       </Stack>
                     </TableCell>
                   </TableRow>

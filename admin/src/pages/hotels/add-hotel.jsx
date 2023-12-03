@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 
 import { Box, Button, FormControl, Grid, IconButton, InputLabel, MenuItem, Paper, Select, TextField, Typography } from "@mui/material";
-import { collection, doc, getDocs, updateDoc } from "firebase/firestore/lite";
+import { collection, doc, getDoc, getDocs, updateDoc } from "firebase/firestore/lite";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 
 import { db } from "../../firebase-config";
@@ -17,12 +17,27 @@ const AddHotel = () => {
   const [rows, setRows] = useState([]);
   const navigate = useNavigate();
   const [placeId, setPlaceId] = useState("");
+  const { id } = useParams();
 
   const getPlaces = async () => {
     try {
       const empCollectionRef = collection(db, "places");
       const data = await getDocs(empCollectionRef);
       setRows(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    } catch (error) {
+      console.error("Error fetching hotels:", error);
+    }
+  };
+
+  const fetchEditDetails = async (id) => {
+    try {
+      const documentRef = doc(db, "places", id);
+      const documentSnapshot = await getDoc(documentRef);
+
+      if (documentSnapshot.exists()) {
+        setPlaceId(documentSnapshot.data().id);
+        setFormData(documentSnapshot.data().properties);
+      }
     } catch (error) {
       console.error("Error fetching hotels:", error);
     }
@@ -82,7 +97,11 @@ const AddHotel = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await createPlace();
+    if (id) {
+      updateHotel();
+    } else {
+      await createPlace();
+    }
   };
 
   const createPlace = async () => {
@@ -106,6 +125,22 @@ const AddHotel = () => {
     }
   };
 
+  const updateHotel = async () => {
+    const documentRef = doc(db, "places", id);
+    const myCollection = collection(db, "places");
+    try {
+      const documentSnapshot = await getDoc(documentRef);
+      if (documentSnapshot.exists()) {
+        const payload = { ...documentSnapshot.data(), properties: formData };
+        const updatedDocRef = doc(myCollection, id);
+        await updateDoc(updatedDocRef, payload);
+        navigate("/hotels");
+      }
+    } catch (error) {
+      console.error("Error editing document: ", error);
+    }
+  };
+
   const handleClose = () => {
     navigate("/hotels");
   };
@@ -115,7 +150,11 @@ const AddHotel = () => {
   }, []);
 
   useEffect(() => {
-    if (placeId !== "") {
+    fetchEditDetails(id);
+  }, [id]);
+
+  useEffect(() => {
+    if (placeId !== "" && !id) {
       const findPlace = rows.find((item) => item.id === placeId);
       setFormData([
         {
@@ -134,7 +173,7 @@ const AddHotel = () => {
         },
       ]);
     }
-  }, [placeId, rows]);
+  }, [id, placeId, rows]);
 
   return (
     <>
@@ -156,6 +195,7 @@ const AddHotel = () => {
                 value={placeId}
                 label="Select Place"
                 size="small"
+                disabled={id ? true : false}
                 onChange={(e) => setPlaceId(e.target.value)}
               >
                 {rows.map((item) => {
