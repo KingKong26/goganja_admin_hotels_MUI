@@ -13,7 +13,7 @@ const Layout = () => {
       <Box height={65} />
       <Box sx={{ display: "flex", marginLeft: "500" }}>
         <Sidebar />
-        <Box component="main" sx={{ flexGrow: 1, px: 3 }} className="bgcolor">
+        <Box component="main" sx={{ flexGrow: 1, p: 3 }} className="bgcolor">
           <Outlet />
         </Box>
       </Box>

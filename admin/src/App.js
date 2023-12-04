@@ -58,6 +58,7 @@ export default function App() {
           <Route index element={<Home />} />
           <Route path="/hotels" element={<Hotel />} />
           <Route path="/add-hotel" element={<AddHotel />} />
+          <Route path="/edit-hotel/:id" element={<AddHotel />} />
           <Route path="/rooms" element={<Rooms />} />
           <Route path="/settings" element={<Settings />} />
         </Route>
