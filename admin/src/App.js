@@ -8,6 +8,7 @@ import Rooms from "./pages/rooms";
 import Login from "./pages/login";
 import Layout from "./layout";
 import Home from "./pages";
+import AddRoom from "./pages/rooms/add-room";
 
 const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem("token");
@@ -60,6 +61,8 @@ export default function App() {
           <Route path="/add-hotel" element={<AddHotel />} />
           <Route path="/edit-hotel/:id" element={<AddHotel />} />
           <Route path="/rooms" element={<Rooms />} />
+          <Route path="/add-room" element={<AddRoom />} />
+          <Route path="/edit-room/:id" element={<AddRoom />} />
           <Route path="/settings" element={<Settings />} />
         </Route>
       </Routes>

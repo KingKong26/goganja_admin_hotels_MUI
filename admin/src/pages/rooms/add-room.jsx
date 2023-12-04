@@ -12,11 +12,12 @@ const Item = styled(Box)(({ theme }) => ({
   paddingBottom: theme.spacing(1),
 }));
 
-const AddHotel = () => {
+const AddRoom = () => {
   const [formData, setFormData] = useState([]);
   const [rows, setRows] = useState([]);
   const navigate = useNavigate();
   const [placeId, setPlaceId] = useState("");
+  const [hotel, setHotel] = useState("");
   const { id } = useParams();
 
   const getPlaces = async () => {
@@ -49,26 +50,31 @@ const AddHotel = () => {
     setFormData(tempFormData);
   };
 
-  const addProperty = () => {
+  const addRoom = () => {
     const tempFormData = [...formData];
     tempFormData.push({
       id: Math.max(...tempFormData.map((item) => item.id)) + 1,
-      address: "",
-      image: "",
-      name: "",
-      newPrice: "",
-      oldPrice: "",
-      photos: [
+      rooms: [
         {
           id: 1,
-          image: "",
+          bed: "",
+          name: "",
+          payment: "",
+          refundable: "",
+          size: "",
+          photos: [
+            {
+              id: 1,
+              image: "",
+            },
+          ],
         },
       ],
     });
     setFormData(tempFormData);
   };
 
-  const removeProperty = (index) => {
+  const removeRoom = (index) => {
     const tempFormData = [...formData];
     tempFormData.splice(index, 1);
     setFormData(tempFormData);
@@ -98,34 +104,34 @@ const AddHotel = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (id) {
-      updateHotel();
+      updateRoom();
     } else {
-      await createPlace();
+      await createRoom();
     }
   };
 
-  const createPlace = async () => {
+  const createRoom = async () => {
     const myCollection = collection(db, "places");
     const findPlace = rows.find((item) => item.id === placeId);
     let payload = {
       ...findPlace,
     };
 
-    if (findPlace?.properties?.length > 0) {
-      payload.properties = [...payload.properties, ...formData];
+    if (findPlace?.properties?.rooms?.length > 0) {
+      payload.properties.rooms = [...payload.properties.rooms, ...formData];
     } else {
-      payload.properties = formData;
+      payload.properties.rooms = formData;
     }
     try {
       const updatedDocRef = doc(myCollection, placeId);
       await updateDoc(updatedDocRef, payload);
-      navigate("/hotels");
+      navigate("/rooms");
     } catch (error) {
       console.error("Error adding document: ", error);
     }
   };
 
-  const updateHotel = async () => {
+  const updateRoom = async () => {
     const documentRef = doc(db, "places", id);
     const myCollection = collection(db, "places");
     try {
@@ -134,7 +140,7 @@ const AddHotel = () => {
         const payload = { ...documentSnapshot.data(), properties: formData };
         const updatedDocRef = doc(myCollection, id);
         await updateDoc(updatedDocRef, payload);
-        navigate("/hotels");
+        navigate("/rooms");
       }
     } catch (error) {
       console.error("Error editing document: ", error);
@@ -142,7 +148,7 @@ const AddHotel = () => {
   };
 
   const handleClose = () => {
-    navigate("/hotels");
+    navigate("/rooms");
   };
 
   useEffect(() => {
@@ -158,16 +164,15 @@ const AddHotel = () => {
       const findPlace = rows.find((item) => item.id === placeId);
       setFormData([
         {
-          id: findPlace?.properties?.length > 0 ? Math.max(...findPlace.properties.map((item) => item.id)) + 1 : 1,
-          address: "",
-          image: "",
-          name: "",
-          newPrice: "",
-          oldPrice: "",
-          photos: [
+          id: findPlace?.properties?.rooms?.length > 0 ? Math.max(...findPlace.properties.rooms.map((item) => item.id)) + 1 : 1,
+          rooms: [
             {
               id: 1,
-              image: "",
+              bed: "",
+              name: "",
+              payment: "",
+              refundable: "",
+              size: "",
             },
           ],
         },
@@ -178,7 +183,7 @@ const AddHotel = () => {
   return (
     <>
       <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <h1>Add Hotel</h1>
+        <h1>Add Room</h1>
       </Box>
 
       <Paper sx={{ padding: "20px" }}>
@@ -186,25 +191,25 @@ const AddHotel = () => {
           <Box sx={{ marginBottom: "10px" }}>
             <FormControl fullWidth>
               <InputLabel id="demo-simple-select-label" size="small">
-                Select Place
+                Select Hotel
               </InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 name="place"
-                value={placeId}
-                label="Select Place"
+                value={hotel}
+                label="Select Hotel"
                 size="small"
                 disabled={id ? true : false}
-                onChange={(e) => setPlaceId(e.target.value)}
+                onChange={(e) => setHotel(e.target.value)}
               >
-                {rows.map((item) => {
-                  return (
-                    <MenuItem key={item.id} value={item.id}>
-                      {item.place}
+                {rows.map((item) =>
+                  item.properties.map((property) => (
+                    <MenuItem key={property.id} value={property.id}>
+                      {property.name}
                     </MenuItem>
-                  );
-                })}
+                  ))
+                )}
               </Select>
             </FormControl>
           </Box>
@@ -219,9 +224,9 @@ const AddHotel = () => {
                     <Grid item xs={6}>
                       <Item>
                         <TextField
-                          label="Address"
-                          value={property.address}
-                          onChange={(e) => handlePropertyChange(index, "address", e.target.value)}
+                          label="Bed"
+                          value={property.room.bed}
+                          onChange={(e) => handlePropertyChange(index, "bed", e.target.value)}
                           fullWidth
                           size="small"
                         />
@@ -231,7 +236,7 @@ const AddHotel = () => {
                       <Item>
                         <TextField
                           label="Image"
-                          value={property.image}
+                          value={property.rooms.image}
                           onChange={(e) => handlePropertyChange(index, "image", e.target.value)}
                           fullWidth
                           size="small"
@@ -241,9 +246,9 @@ const AddHotel = () => {
                     <Grid item xs={6}>
                       <Item>
                         <TextField
-                          label="Name"
-                          value={property.name}
-                          onChange={(e) => handlePropertyChange(index, "name", e.target.value)}
+                          label="ID"
+                          value={property.rooms.id}
+                          onChange={(e) => handlePropertyChange(index, "id", e.target.value)}
                           fullWidth
                           size="small"
                         />
@@ -252,32 +257,32 @@ const AddHotel = () => {
                     <Grid item xs={3}>
                       <Item>
                         <TextField
-                          label="New Average Price"
-                          value={property.newPrice}
-                          onChange={(e) => handlePropertyChange(index, "newPrice", e.target.value)}
+                          label="Price Per Night"
+                          value={property.rooms.price}
+                          onChange={(e) => handlePropertyChange(index, "price", e.target.value)}
                           fullWidth
                           size="small"
                         />
                       </Item>
                     </Grid>
-                    <Grid item xs={3}>
+                    {/* <Grid item xs={3}>
                       <Item>
                         <TextField
-                          label="Old Average Price"
+                          label="Old Price"
                           value={property.oldPrice}
                           onChange={(e) => handlePropertyChange(index, "oldPrice", e.target.value)}
                           fullWidth
                           size="small"
                         />
                       </Item>
-                    </Grid>
+                    </Grid> */}
                   </Grid>
 
                   <Box sx={{ padding: "10px 0" }}>
                     <Typography component="h1">Photos</Typography>
                   </Box>
                   <Grid container columnSpacing={1}>
-                    {property.photos.map((photo, photoIndex) => {
+                    {property.rooms.photos.map((photo, photoIndex) => {
                       return (
                         <Grid item container alignItems="center" columnSpacing={2} key={photoIndex}>
                           <Grid item xs={11}>
@@ -309,15 +314,15 @@ const AddHotel = () => {
                   </Box>
 
                   <Box sx={{ marginTop: "20px" }}>
-                    <IconButton disabled={formData?.length === 1} onClick={() => removeProperty(index)}>
+                    <IconButton disabled={formData?.length === 1} onClick={() => removeRoom(index)}>
                       <DeleteIcon className="cursor__pointer" />
                     </IconButton>
                   </Box>
                 </Paper>
               ))}
               <Box sx={{ marginTop: 1 }}>
-                <Button variant="contained" size="small" color="primary" onClick={addProperty}>
-                  Add Property
+                <Button variant="contained" size="small" color="primary" onClick={addRoom}>
+                  Add Room
                 </Button>
               </Box>
             </>
@@ -336,4 +341,4 @@ const AddHotel = () => {
   );
 };
 
-export default AddHotel;
+export default AddRoom;
