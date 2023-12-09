@@ -6,55 +6,43 @@ import TableContainer from "@mui/material/TableContainer";
 import { Link, useNavigate } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Box, Button, Stack } from "@mui/material";
-import Typography from "@mui/material/Typography";
 import TableHead from "@mui/material/TableHead";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import EditIcon from "@mui/icons-material/Edit";
 import TableRow from "@mui/material/TableRow";
-import Divider from "@mui/material/Divider";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 
 import { db } from "../../firebase-config";
 
 export default function Hotel() {
-  const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [page, setPage] = useState(0);
   const [rows, setRows] = useState([]);
 
   const navigate = useNavigate();
 
-  const getPlaces = async () => {
+  const getHotel = async () => {
     try {
-      const empCollectionRef = collection(db, "places");
-      const data = await getDocs(empCollectionRef);
-      let hotelData = [];
-      data.docs.forEach((doc) => {
-        return doc.data()?.properties?.forEach((item) => {
-          hotelData.push({ ...item, place: doc.data().place, placeId: doc.data().id });
-        });
-      });
-      setRows(hotelData);
+      const hotelCollection = collection(db, "hotel");
+      const data = await getDocs(hotelCollection);
+      setRows(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     } catch (error) {
-      console.error("Error fetching hotels:", error);
+      console.error("Error getHotel:", error);
     }
   };
 
-  const deletePlace = async (placeId) => {
-    const placesCollection = collection(db, "places");
-    const placeDoc = doc(placesCollection, placeId);
+  const deleteHotel = async (id) => {
+    const roomCollection = collection(db, "hotel");
+    const roomDoc = doc(roomCollection, id);
     try {
-      await deleteDoc(placeDoc);
-      getPlaces();
+      await deleteDoc(roomDoc);
+      getHotel();
     } catch (error) {
-      console.error("Error deleting place: ", error);
+      console.error("Error deleteHotel: ", error);
     }
   };
-
-  useEffect(() => {
-    getPlaces();
-  }, []);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -65,28 +53,24 @@ export default function Hotel() {
     setPage(0);
   };
 
+  useEffect(() => {
+    getHotel();
+  }, []);
+
   return (
     <>
-      <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <h1>Hotels</h1>
+      <Box sx={{ display: "flex", alignItems: "center", justifyContent: "end", marginBottom: "20px" }}>
         <Button variant="contained" onClick={() => navigate("/add-hotel")}>
-          Add Hotels
+          Add Hotel
         </Button>
       </Box>
       <Paper sx={{ width: "100%", overflow: "hidden" }}>
-        <Typography gutterBottom variant="h5" component="div" sx={{ padding: "20px" }}>
-          Products List
-        </Typography>
-        <Divider />
         <TableContainer sx={{ maxHeight: 440 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
                 <TableCell align="left" style={{ minWidth: "100px" }}>
                   Picture
-                </TableCell>
-                <TableCell align="left" style={{ minWidth: "100px" }}>
-                  Place
                 </TableCell>
                 <TableCell align="left" style={{ minWidth: "100px" }}>
                   Name
@@ -108,16 +92,15 @@ export default function Hotel() {
                         <img src={row.image} width={80} height={35} alt="" />
                       </Link>
                     </TableCell>
-                    <TableCell align="left">{row.place}</TableCell>
                     <TableCell align="left">{row.name}</TableCell>
                     <TableCell align="left">{row.address}</TableCell>
                     <TableCell align="left">
                       <Stack direction="row" spacing={2}>
-                        <DeleteIcon className="cursor__pointer" onClick={() => deletePlace(row.placeId)} />
+                        <DeleteIcon className="cursor__pointer" onClick={() => deleteHotel(row.id)} />
                         <EditIcon
                           className="cursor__pointer"
                           onClick={() => {
-                            navigate(`/edit-hotel/${row.placeId}`);
+                            navigate(`/edit-hotel/${row.id}`);
                           }}
                         />
                       </Stack>
