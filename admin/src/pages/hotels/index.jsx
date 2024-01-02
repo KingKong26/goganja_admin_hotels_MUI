@@ -5,7 +5,7 @@ import TablePagination from "@mui/material/TablePagination";
 import TableContainer from "@mui/material/TableContainer";
 import { Link, useNavigate } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Box, Button, Stack } from "@mui/material";
+import { Box, Button, CircularProgress, Stack } from "@mui/material";
 import TableHead from "@mui/material/TableHead";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -20,6 +20,7 @@ export default function Hotel() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [page, setPage] = useState(0);
   const [rows, setRows] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const navigate = useNavigate();
 
@@ -28,8 +29,10 @@ export default function Hotel() {
       const hotelCollection = collection(db, "hotel");
       const data = await getDocs(hotelCollection);
       setRows(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      setIsLoading(false);
     } catch (error) {
       console.error("Error getHotel:", error);
+      setIsLoading(false);
     }
   };
 
@@ -69,45 +72,59 @@ export default function Hotel() {
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
-                <TableCell align="left" style={{ minWidth: "100px" }}>
+                <TableCell align="center" style={{ minWidth: "100px" }}>
                   Picture
                 </TableCell>
-                <TableCell align="left" style={{ minWidth: "100px" }}>
+                <TableCell align="center" style={{ minWidth: "100px" }}>
                   Name
                 </TableCell>
-                <TableCell align="left" style={{ minWidth: "100px" }}>
+                <TableCell align="center" style={{ minWidth: "100px" }}>
                   Address
                 </TableCell>
-                <TableCell align="left" style={{ minWidth: "100px" }}>
+                <TableCell align="center" style={{ minWidth: "100px" }}>
                   Action
                 </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                return (
-                  <TableRow key={row.id} hover role="checkbox" tabIndex={-1}>
-                    <TableCell align="left">
-                      <Link to={row.placeImage} target="_blank">
-                        <img src={row.image} width={80} height={35} alt="" />
-                      </Link>
-                    </TableCell>
-                    <TableCell align="left">{row.name}</TableCell>
-                    <TableCell align="left">{row.address}</TableCell>
-                    <TableCell align="left">
-                      <Stack direction="row" spacing={2}>
-                        <DeleteIcon className="cursor__pointer" onClick={() => deleteHotel(row.id)} />
-                        <EditIcon
-                          className="cursor__pointer"
-                          onClick={() => {
-                            navigate(`/edit-hotel/${row.id}`);
-                          }}
-                        />
-                      </Stack>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
+              {isLoading ? (
+                <TableRow>
+                  <TableCell component="th" scope="row" align="center" colSpan={8}>
+                    <CircularProgress />
+                  </TableCell>
+                </TableRow>
+              ) : rows.length === 0 ? (
+                <TableRow>
+                  <TableCell component="th" scope="row" align="center" colSpan={8}>
+                    Hotals Not Found!
+                  </TableCell>
+                </TableRow>
+              ) : (
+                rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                  return (
+                    <TableRow key={row.id} hover role="checkbox" tabIndex={-1}>
+                      <TableCell align="center" style={{ width: "385px", height: "250px" }}>
+                        {/* <Link to={row.placeImage} target="_blank"> */}
+                        <img src={row.image} width={"100%"} height={"100%"} alt="" style={{ objectFit: "cover" }} />
+                        {/* </Link> */}
+                      </TableCell>
+                      <TableCell align="center">{row.name}</TableCell>
+                      <TableCell align="center">{row.address}</TableCell>
+                      <TableCell align="center">
+                        <Stack direction="row" justifyContent={"center"} spacing={2}>
+                          <DeleteIcon className="cursor__pointer" onClick={() => deleteHotel(row.id)} />
+                          <EditIcon
+                            className="cursor__pointer"
+                            onClick={() => {
+                              navigate(`/edit-hotel/${row.id}`);
+                            }}
+                          />
+                        </Stack>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })
+              )}
             </TableBody>
           </Table>
         </TableContainer>
