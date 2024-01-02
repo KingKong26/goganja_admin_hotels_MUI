@@ -20,6 +20,7 @@ import { signOut } from "firebase/auth";
 import Badge from "@mui/material/Badge";
 import Menu from "@mui/material/Menu";
 import Box from "@mui/material/Box";
+import { useAuth } from "../context/UserContext";
 
 const AppBar = styled(
   MuiAppBar,
@@ -69,6 +70,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function Navbar() {
+  const { logoutUser } = useAuth();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const updateOpen = useAppStore((state) => state.updateOpen);
@@ -101,6 +103,7 @@ export default function Navbar() {
       await signOut(auth);
       localStorage.removeItem("token");
       navigate("/login");
+      logoutUser();
     } catch (error) {
       console.error("Logout error:", error.message);
     }

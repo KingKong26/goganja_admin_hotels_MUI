@@ -1,3 +1,6 @@
+import React from "react";
+import List from "../../components/settings/List";
+
 export default function Settings() {
-  return <h1>Settings</h1>;
+  return <List />;
 }
