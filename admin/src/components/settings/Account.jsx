@@ -182,8 +182,8 @@ export default function Account() {
           </Card>
         </Grid>
       </Grid>
-      <Box height={20} />
-      <Grid container spacing={2} sx={{ mt: "200" }}>
+
+      {/* <Grid container spacing={2} sx={{ mt: "200" }}>
         <Grid item xs={12}>
           <Card>
             <CardContent>
@@ -207,7 +207,7 @@ export default function Account() {
             </CardContent>
           </Card>
         </Grid>
-      </Grid>
+      </Grid> */}
     </form>
   );
 }

@@ -122,8 +122,6 @@ export default function Profile() {
           </Grid>
         </Grid>
       </Grid>
-
-      <Box height={20} />
     </>
   );
 }

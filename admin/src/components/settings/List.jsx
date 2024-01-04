@@ -79,7 +79,8 @@ export default function List() {
 
   return (
     <>
-      <Card sx={{ minHeight: 84 + "vh" }}>
+      {/* sx={{ minHeight: 84 + "vh" }} */}
+      <Card>
         <CardContent>
           {userData ? (
             <Box sx={{ width: "100%" }}>

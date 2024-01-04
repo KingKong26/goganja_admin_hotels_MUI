@@ -75,7 +75,7 @@ export default function Home() {
             </Stack>
           </Grid>
         </Grid>
-        <Box height={20} />
+
         <Grid container spacing={2}>
           <Grid item xs={8}>
             <Card sx={{ height: 60 + "vh" }}>

@@ -271,8 +271,6 @@ export default function Personal() {
       <Button variant="contained" color="primary" type="submit" disabled={loading} sx={{ mt: "3rem" }}>
         {loading ? "Updating..." : "Update"}
       </Button>
-
-      <Box height={20} />
     </form>
   );
 }
