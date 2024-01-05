@@ -24,7 +24,7 @@ export default function Home() {
                     <CreditCardIcon />
                   </div>
                   <Typography gutterBottom variant="h5" component="div" sx={{ color: "#ffffff" }}>
-                    $0.00
+                    $129.00
                   </Typography>
                   <Typography gutterBottom variant="body2" component="div" sx={{ color: "#ccd1d1" }}>
                     Total Earnings
@@ -37,7 +37,7 @@ export default function Home() {
                     <ShoppingBagIcon />
                   </div>
                   <Typography gutterBottom variant="h5" component="div" sx={{ color: "#ffffff" }}>
-                    $0.00
+                    $300.00
                   </Typography>
                   <Typography gutterBottom variant="body2" component="div" sx={{ color: "#ccd1d1" }}>
                     Total Orders

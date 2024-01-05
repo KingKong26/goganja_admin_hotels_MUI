@@ -228,7 +228,7 @@ export default function Navbar() {
               onClick={handleMobileMenuOpen}
               color="inherit"
             >
-              <MoreIcon />
+              <MoreIcon color="secondary"/>
             </IconButton>
           </Box>
         </Toolbar>
