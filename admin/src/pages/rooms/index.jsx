@@ -61,7 +61,7 @@ export default function Rooms() {
   return (
     <>
       <Box sx={{ display: "flex", alignItems: "center", justifyContent: "end", marginBottom: "20px" }}>
-        <Button variant="contained" onClick={() => navigate("/add-room")}>
+        <Button variant="contained" onClick={() => navigate("/add-room")} color="secondary">
           Add Room
         </Button>
       </Box>

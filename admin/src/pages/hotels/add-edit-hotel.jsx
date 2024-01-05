@@ -73,7 +73,6 @@ const AddEditHotel = () => {
     }
   };
 
-
   const fetchEditRecord = async (id) => {
     try {
       const documentRef = doc(db, "hotel", id);
@@ -192,7 +191,9 @@ const AddEditHotel = () => {
   return (
     <>
       <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <h1>{id ? "Update" : "Add"} Hotel</h1>
+        <Typography variant="h4" fontWeight={500} sx={{ marginBottom: "16px" }}>
+          {id ? "Update" : "Add"} Hotel
+        </Typography>
       </Box>
 
       <Paper sx={{ padding: "20px" }}>
@@ -393,14 +394,13 @@ const AddEditHotel = () => {
                   ""
                 )}
               </Stack>
-             
             </>
           ) : null}
           <Box sx={{ display: "flex", alignItems: "center", justifyContent: "end", gap: "10px", marginTop: "20px" }}>
             <Button type="button" variant="outlined" color="primary" onClick={handleClose}>
               Go Back
             </Button>
-            <Button type="submit" variant="contained" color="primary" disabled={loading ? true : false}>
+            <Button type="submit" variant="contained" color="secondary" disabled={loading ? true : false}>
               {loading ? <CircularProgress sx={{ color: "#fff", fontSize: "12px" }} size={24} /> : id ? "Update" : "Create"}
             </Button>
           </Box>

@@ -21,6 +21,7 @@ import Badge from "@mui/material/Badge";
 import Menu from "@mui/material/Menu";
 import Box from "@mui/material/Box";
 import { useAuth } from "../context/UserContext";
+import logo from "../assets/GoGanjaLogoGold.png";
 
 const AppBar = styled(
   MuiAppBar,
@@ -182,14 +183,12 @@ export default function Navbar() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed" elevation={2} sx={{ backgroundColor: "#ffffff", color: "#2f2f2f" }}>
+      <AppBar position="fixed" elevation={2} sx={{ backgroundColor: "primary", color: "#2f2f2f" }}>
         <Toolbar>
-          <IconButton size="large" edge="start" color="inherit" aria-label="open drawer" sx={{ mr: 2 }} onClick={() => updateOpen(!doopen)}>
+          <IconButton size="large" edge="start" color="secondary" aria-label="open drawer"  onClick={() => updateOpen(!doopen)}>
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div" sx={{ display: { xs: "none", sm: "block" } }}>
-            MUI
-          </Typography>
+          <img src={logo} />
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
@@ -198,12 +197,12 @@ export default function Navbar() {
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <IconButton size="large" aria-label="show 4 new mails" color="inherit">
+            <IconButton size="large" aria-label="show 4 new mails" color="secondary">
               <Badge badgeContent={4} color="error">
                 <MailIcon />
               </Badge>
             </IconButton>
-            <IconButton size="large" aria-label="show 17 new notifications" color="inherit">
+            <IconButton size="large" aria-label="show 17 new notifications" color="secondary">
               <Badge badgeContent={17} color="error">
                 <NotificationsIcon />
               </Badge>
@@ -215,7 +214,7 @@ export default function Navbar() {
               aria-controls={menuId}
               aria-haspopup="true"
               onClick={handleProfileMenuOpen}
-              color="inherit"
+              color="secondary"
             >
               <AccountCircle />
             </IconButton>

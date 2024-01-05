@@ -73,7 +73,7 @@ const Login = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <Button sx={{ marginTop: "15px" }} variant="contained" color="primary" fullWidth disabled={loading} onClick={handleLogin}>
+        <Button sx={{ marginTop: "15px" }} variant="contained" color="secondary" fullWidth disabled={loading} onClick={handleLogin}>
           {loading ? "Loading..." : "Login"}
         </Button>
 

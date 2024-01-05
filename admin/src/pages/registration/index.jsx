@@ -90,7 +90,7 @@ const Registration = () => {
           onChange={(e) => setDisplayName(e.target.value)}
         />
 
-        <Button sx={{ marginTop: "15px" }} variant="contained" color="primary" fullWidth disabled={loading} onClick={handleRegistration}>
+        <Button sx={{ marginTop: "15px" }} variant="contained" color="secondary" fullWidth disabled={loading} onClick={handleRegistration}>
           {loading ? "Loading..." : "Register"}
         </Button>
 

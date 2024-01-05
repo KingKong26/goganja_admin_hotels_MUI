@@ -176,7 +176,7 @@ export default function Account() {
                 </Grid>
               </Grid>
             </CardContent>
-            <Button sx={{ margin: "16px" }} disabled={loading} variant="contained" type="submit">
+            <Button sx={{ margin: "16px" }} disabled={loading} variant="contained" type="submit" color="secondary">
               {loading ? "Updating..." : "Update"}
             </Button>
           </Card>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { Box, Button, FormControl, Grid, InputLabel, MenuItem, Paper, Select, TextField } from "@mui/material";
+import { Box, Button, FormControl, Grid, InputLabel, MenuItem, Paper, Select, TextField, Typography } from "@mui/material";
 import { addDoc, collection, doc, getDoc, getDocs, updateDoc } from "firebase/firestore/lite";
 import { useNavigate, useParams } from "react-router-dom";
 import { styled } from "@mui/material/styles";
@@ -105,7 +105,9 @@ const AddEditRoom = () => {
   return (
     <>
       <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <h1>Add Room</h1>
+        <Typography variant="h4" fontWeight={500} sx={{ marginBottom: "16px" }}>
+          Add Room
+        </Typography>
       </Box>
 
       <Paper sx={{ padding: "20px" }}>
@@ -164,7 +166,7 @@ const AddEditRoom = () => {
             <Button type="button" variant="outlined" color="primary" onClick={handleClose}>
               Go Back
             </Button>
-            <Button type="submit" variant="contained" color="primary">
+            <Button type="submit" variant="contained" color="secondary">
               {id ? "Update" : "Create"}
             </Button>
           </Box>

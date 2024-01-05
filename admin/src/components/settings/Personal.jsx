@@ -268,7 +268,7 @@ export default function Personal() {
           </Grid>
         </Grid>
       </Grid>
-      <Button variant="contained" color="primary" type="submit" disabled={loading} sx={{ mt: "3rem" }}>
+      <Button variant="contained" color="secondary" type="submit" disabled={loading} sx={{ mt: "3rem" }}>
         {loading ? "Updating..." : "Update"}
       </Button>
     </form>

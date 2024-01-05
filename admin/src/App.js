@@ -9,6 +9,7 @@ import Rooms from "./pages/rooms";
 import Login from "./pages/login";
 import Layout from "./layout";
 import Home from "./pages";
+import { ThemeProvider, createTheme } from "@mui/material";
 
 const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem("token");
@@ -28,44 +29,63 @@ const PublicRoute = ({ children }) => {
   return children;
 };
 
+const theme = createTheme({
+  typography: {
+    fontFamily: ["montserrat"].join(","),
+  },
+  palette: {
+    primary: {
+      main: "#314435",
+    },
+    secondary: {
+      main: "#D7A90E",
+    },
+    background: {
+      main: "#FFFFFF",
+    },
+  },
+});
+
 export default function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route
-          path="/registration"
-          element={
-            <PublicRoute>
-              <Registration />
-            </PublicRoute>
-          }
-        />
-        <Route
-          path="/login"
-          element={
-            <PublicRoute>
-              <Login />
-            </PublicRoute>
-          }
-        />
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              <Layout />
-            </ProtectedRoute>
-          }
-        >
-          <Route index element={<Home />} />
-          <Route path="/hotels" element={<Hotel />} />
-          <Route path="/add-hotel" element={<AddEditHotel />} />
-          <Route path="/edit-hotel/:id" element={<AddEditHotel />} />
-          <Route path="/rooms" element={<Rooms />} />
-          <Route path="/add-room" element={<AddEditRoom />} />
-          <Route path="/edit-room/:id" element={<AddEditRoom />} />
-          <Route path="/settings" element={<Settings />} />
-        </Route>
-      </Routes>
+      <ThemeProvider theme={theme}>
+        <Routes>
+          <Route
+            path="/registration"
+            element={
+              <PublicRoute>
+                <Registration />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              <PublicRoute>
+                <Login />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <Layout />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<Home />} />
+            <Route path="/hotels" element={<Hotel />} />
+            <Route path="/add-hotel" element={<AddEditHotel />} />
+            <Route path="/edit-hotel/:id" element={<AddEditHotel />} />
+            <Route path="/rooms" element={<Rooms />} />
+            <Route path="/add-room" element={<AddEditRoom />} />
+            <Route path="/edit-room/:id" element={<AddEditRoom />} />
+            <Route path="/settings" element={<Settings />} />
+          </Route>
+        </Routes>
+      </ThemeProvider>
     </BrowserRouter>
   );
 }

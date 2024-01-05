@@ -11,8 +11,7 @@
 }
 
 .iconstyle{
-  margin-top: 20px;
-  margin-left: 20px;
+  margin: 10px 0;
   color: white;
 }
 
@@ -33,6 +32,6 @@
 
 .bgcolor {
   min-height: 100vh;
-  background: #ECEFF1;
+  background: #314435;
   background: linear-gradient(158deg, rgb(224, 224, 224) 0%, rrgb(233, 237, 254)100%);
 }

@@ -47,36 +47,38 @@ export default function Home() {
             </Stack>
           </Grid>
           <Grid item xs={4}>
-            <Stack spacing={2}>
-              <Card className="gradientlight">
-                <Stack spacing={2} direction="row">
-                  <div className="iconstyle">
-                    <StorefrontIcon />
-                  </div>
-                  <div className="paddingall">
-                    <span className="pricetitle">$0.00</span>
-                    <br />
-                    <span className="pricesubtitle">Total Income</span>
-                  </div>
+                <Stack spacing={2} direction={"column"}>
+                  <Card className="gradientlight" sx={{ padding: "10px" }}>
+                    <Stack
+                      spacing={2}
+                      direction="row"
+                      alignItems={"center"}
+                    >
+                      <StorefrontIcon color="background" />
+                      <div>
+                        <Typography variant="subtitle2" color="Background">$203k</Typography>
+                        <Typography variant="caption" color="Background">Total Income</Typography>
+                      </div>
+                    </Stack>
+                  </Card>
+                  <Card sx={{ padding: "10px" }}>
+                    <Stack
+                      spacing={2}
+                      direction="row"
+                      alignItems={"center"}
+                    >
+                      <StorefrontIcon />
+                      <div>
+                        <Typography variant="subtitle2">$130k</Typography>
+                        <Typography variant="caption">Total Expenses</Typography>
+                      </div>
+                    </Stack>
+                  </Card>
                 </Stack>
-              </Card>
-              <Card sx={{ maxWidth: 345 }}>
-                <Stack spacing={2} direction="row">
-                  <div className="iconstyleblack">
-                    <StorefrontIcon />
-                  </div>
-                  <div className="paddingall">
-                    <span className="pricetitle">$0</span>
-                    <br />
-                    <span className="pricesubtitle">Total Income</span>
-                  </div>
-                </Stack>
-              </Card>
-            </Stack>
-          </Grid>
+              </Grid>
         </Grid>
 
-        <Grid container spacing={2}>
+        <Grid container spacing={2} sx={{ mt: "0" }}>
           <Grid item xs={8}>
             <Card sx={{ height: 60 + "vh" }}>
               <CardContent></CardContent>

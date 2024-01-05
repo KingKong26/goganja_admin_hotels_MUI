@@ -133,7 +133,7 @@ export default function Password() {
       </Grid>
       <Button
         variant="contained"
-        color="primary"
+        color="secondary"
         type="submit"
         sx={{ mt: "3rem" }}
         disabled={loading}

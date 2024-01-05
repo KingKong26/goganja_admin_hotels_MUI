@@ -63,7 +63,7 @@ export default function Hotel() {
   return (
     <>
       <Box sx={{ display: "flex", alignItems: "center", justifyContent: "end", marginBottom: "20px" }}>
-        <Button variant="contained" onClick={() => navigate("/add-hotel")}>
+        <Button variant="contained" onClick={() => navigate("/add-hotel")} color="secondary">
           Add Hotel
         </Button>
       </Box>
